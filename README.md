@@ -17,6 +17,7 @@ This repository contains Docker Compose configurations for a **complete personal
 ---
 
 ## ⚠️ Important Notes
+- Set **PATHS** in **.env** for every service that requires them
 - All **sensitive information** (VPN credentials, API keys) are **not included** in this repo.  
 - Some services may require **proxy access** through Gluetun. Use the address `gluetun:8888` where needed.  
 - This repo **does not contain any copyrighted media**
