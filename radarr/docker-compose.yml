@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - ./config:/config
+      - ${DOWNLOAD_PATH}:/downloads
+      - ${MEDIA_PATH}:/media
+    ports:
+      - 7878:7878
+    networks:
+      - server-main
+    restart: unless-stopped
+
+
+
+networks:
+  server-main:
+    external: true

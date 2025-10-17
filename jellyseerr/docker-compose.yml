@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      # VPN credentials and settings
+      - VPNSP=protonvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      # Timezone settings
+      - TZ=Asia/Kolkata
+      # Country and proxy settings
+      - SERVER_COUNTRIES=Netherlands
+      - FREE_ONLY=on
+      # Exclude the local network from the VPN
+      - NO_PROXY_CIDR=192.168.68.0/24
+      - VPN_ROUTE_TO_HOST=on
+      - CUSTOM_DNS=1.1.1.1
+      - HTTPPROXY=on        # 🔑 this is required to enable port 8888
+    ports:
+      - "8888:8888"         # proxy port (optional to expose externally)
+    volumes:
+      - ./gluetun:/gluetun
+    networks:
+      - server-main
+    extra_hosts:
+      - "jellyfin-host:192.168.68.102"
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:preview-seerr
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Asia/Kolkata
+      - PORT=5055
+      # Proxy must be set in Jellyseerr’s web UI:
+      # http://172.28.0.2:8888
+    volumes:
+      - ./config:/app/config
+    depends_on:
+      - gluetun
+    ports:
+      - "5055:5055"
+    networks:
+      - server-main
+    extra_hosts:
+      - "jellyfin-host:192.168.68.102"
+    restart: unless-stopped
+
+networks:
+  server-main:
+    external: true

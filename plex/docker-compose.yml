@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    devices:
+      - /dev/dri:/dev/dri   # <-- Pass the Intel GPU into the container
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - TZ=Asia/Kolkata
+
+    volumes:
+      - ~/plex/config:/config
+      - ~/plex/transcode:/transcode
+      - /home/karthikeyan/Media:/media:ro
+    restart: unless-stopped

@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    user: "${UID}:${GID}"
+    environment:
+      - TZ=Asia/Kolkata
+      - HTTP_PROXY=http://192.168.68.102:1024
+      - NO_PROXY=localhost,127.0.0.1
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ${MEDIA_PATH}:/media:ro
+      - ./custom/ui:/usr/share/jellyfin/web/ui:ro
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - "8096:8096"
+    networks:
+      - server-main
+    restart: unless-stopped
+
+networks:
+  server-main:
+    external: true
+
