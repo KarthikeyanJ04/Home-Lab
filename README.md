@@ -12,7 +12,7 @@ This repository contains Docker Compose configurations for a **complete personal
 - **Radarr & Sonarr** – Automate your movie and TV show management.  
 - **Prowlarr** – Indexer manager for all your automation tools.  
 - **Jellyseerr** – Media request management (no media included).  
-- **Other useful services** – Plex, Portainer, QBittorrent, Nginx, Technitium DNS, and more.
+- **Other useful services** – Plex, Portainer, QBittorrent, Nginx, and more.
 
 ---
 
